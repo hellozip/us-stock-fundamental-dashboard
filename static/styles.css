@@ -600,6 +600,77 @@ h2 {
   border-radius: 8px;
 }
 
+.market-block {
+  background: #fbfcfe;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.market-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.market-head h4 {
+  margin-bottom: 6px;
+}
+
+.market-grid {
+  margin: 14px 0;
+}
+
+.market-metric {
+  background: #fff;
+}
+
+.company-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.mini-chart {
+  min-height: 230px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.mini-chart.wide {
+  grid-column: span 3;
+}
+
+.mini-chart span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mini-chart canvas {
+  width: 100% !important;
+  height: 180px !important;
+}
+
+.mini-chart.wide canvas {
+  height: 230px !important;
+}
+
+.chart-empty::after {
+  content: "暂无可绘制数据";
+  display: grid;
+  height: 180px;
+  place-items: center;
+  color: var(--muted);
+  background: var(--surface-soft);
+  border-radius: 8px;
+}
+
 .asset-links a,
 .open-link {
   display: inline-flex;
@@ -726,10 +797,16 @@ td {
   .control-row,
   .detail-top,
   .detail-columns,
+  .market-head,
   .kpi-grid,
   .theme-map,
-  .media-wall {
+  .media-wall,
+  .company-chart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .mini-chart.wide {
+    grid-column: auto;
   }
 
   .section-head {

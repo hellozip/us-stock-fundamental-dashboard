@@ -6,3 +6,4 @@ server.log
 server.err.log
 page-check.png
 .venv/
+static/data/cache/

@@ -338,6 +338,7 @@ function renderDetail(company) {
   const points = listHtml(company.key_points);
   const risks = listHtml(company.risks);
   const sections = sectionHtml(company.sections);
+  const marketHtml = marketDataHtml(company);
 
   els.detailPanel.innerHTML = `
     <div class="detail-top">
@@ -353,6 +354,7 @@ function renderDetail(company) {
       <div class="score-pill">${scoreOf(company).toFixed(1)}</div>
     </div>
     <div class="score-grid">${scoreHtml}</div>
+    ${marketHtml}
     ${metricHtml ? `<div class="metric-grid">${metricHtml}</div>` : ""}
     ${assetHtml ? `<div class="detail-block"><h4>资料入口</h4><div class="asset-links">${assetHtml}</div></div>` : ""}
     ${mediaHtml ? `<div class="detail-block">${mediaHtml}</div>` : ""}
@@ -362,7 +364,163 @@ function renderDetail(company) {
     </div>
     ${sections ? `<div class="detail-block"><h4>报告章节</h4>${sections}</div>` : ""}
   `;
+  renderCompanyMarketCharts(company);
   renderTablePreview(company);
+}
+
+function formatNumber(value, digits = 2) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
+  return Number(value).toLocaleString("zh-CN", { maximumFractionDigits: digits, minimumFractionDigits: 0 });
+}
+
+function formatAmountCn(value) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return "-";
+  const number = Number(value);
+  const abs = Math.abs(number);
+  if (abs >= 1e12) return `${(number / 1e12).toFixed(2)}万亿`;
+  if (abs >= 1e8) return `${(number / 1e8).toFixed(2)}亿`;
+  if (abs >= 1e6) return `${(number / 1e6).toFixed(2)}百万`;
+  return formatNumber(number, 0);
+}
+
+function marketDataHtml(company) {
+  const market = company.market_data;
+  if (!market || market.error) {
+    return company.ticker
+      ? `<div class="detail-block market-block"><h4>最新财报与市场数据</h4><p class="detail-summary">暂未取得 ${escapeHtml(company.ticker)} 的最新市场数据。</p></div>`
+      : "";
+  }
+  const report = market.latest_report || {};
+  const reportLink = report.url
+    ? `<a class="open-link" href="${report.url}" target="_blank" rel="noreferrer"><i data-lucide="external-link"></i>${escapeHtml(report.form || "SEC")}</a>`
+    : `<span class="chip">${escapeHtml(report.form || "SEC")}</span>`;
+  const metrics = (market.display_metrics || [])
+    .map(
+      (item) => `
+        <div class="metric-tile market-metric">
+          <small>${escapeHtml(item.group)} · ${escapeHtml(item.label)}</small>
+          <strong>${escapeHtml(item.value)}</strong>
+        </div>
+      `
+    )
+    .join("");
+  const units = market.financial_units
+    ? Object.entries(market.financial_units)
+        .slice(0, 5)
+        .map(([key, unit]) => `<span class="chip">${escapeHtml(key)} ${escapeHtml(unit)}</span>`)
+        .join("")
+    : "";
+  return `
+    <div class="detail-block market-block">
+      <div class="market-head">
+        <div>
+          <h4>最新财报与市场数据</h4>
+          <p class="detail-summary">财报来自 SEC，估值用 Nasdaq 市值结合 SEC TTM 财务计算，波动率来自 Yahoo 历史价格。</p>
+        </div>
+        <div class="asset-links">${reportLink}</div>
+      </div>
+      <div class="detail-meta">
+        <span class="chip">财报日 ${escapeHtml(report.report_date || "-")}</span>
+        <span class="chip">提交日 ${escapeHtml(report.filing_date || "-")}</span>
+        <span class="chip">更新 ${escapeHtml(formatDate(market.updated_at))}</span>
+        ${units}
+      </div>
+      <div class="metric-grid market-grid">${metrics}</div>
+      <div class="company-chart-grid">
+        <div class="mini-chart"><span>盈利率</span><canvas id="companyProfitChart"></canvas></div>
+        <div class="mini-chart"><span>估值倍数</span><canvas id="companyValuationChart"></canvas></div>
+        <div class="mini-chart"><span>波动与回撤</span><canvas id="companyVolatilityChart"></canvas></div>
+        <div class="mini-chart wide"><span>最近价格走势</span><canvas id="companyPriceChart"></canvas></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCompanyMarketCharts(company) {
+  const market = company?.market_data;
+  ["companyProfitChart", "companyValuationChart", "companyVolatilityChart", "companyPriceChart"].forEach(destroyChart);
+  if (!market || !window.Chart) return;
+  renderMetricBar("companyProfitChart", market.profitability, ["毛利率", "经营利润率", "净利率", "自由现金流率", "ROE"], "%", "#169b72");
+  renderMetricBar("companyValuationChart", market.valuation, ["P/S", "P/E", "P/FCF"], "x", "#1f7ae0");
+  renderMetricBar("companyVolatilityChart", market.volatility, ["30日年化波动率", "90日年化波动率", "90日最大回撤"], "%", "#b87500");
+  renderPriceLine("companyPriceChart", market.price_history || []);
+}
+
+function renderMetricBar(canvasId, data, order, suffix, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || !window.Chart) return;
+  const rows = order
+    .map((key) => ({ label: key, value: data?.[key] }))
+    .filter((row) => row.value !== null && row.value !== undefined && Number.isFinite(Number(row.value)));
+  if (!rows.length) {
+    canvas.parentElement.classList.add("chart-empty");
+    return;
+  }
+  state.charts[canvasId] = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: rows.map((row) => row.label),
+      datasets: [
+        {
+          data: rows.map((row) => row.value),
+          backgroundColor: rows.map((row) => (Number(row.value) < 0 ? "rgba(207, 62, 79, 0.72)" : color)),
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (item) => `${formatNumber(item.raw)}${suffix}` } },
+      },
+      scales: {
+        x: { ticks: { maxRotation: 0, autoSkip: false } },
+        y: { ticks: { callback: (value) => `${formatNumber(value)}${suffix}` } },
+      },
+    },
+  });
+}
+
+function renderPriceLine(canvasId, history) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || !window.Chart) return;
+  const rows = history.slice(-90).filter((item) => item.close);
+  if (!rows.length) {
+    canvas.parentElement.classList.add("chart-empty");
+    return;
+  }
+  state.charts[canvasId] = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: rows.map((item) => item.date.slice(5)),
+      datasets: [
+        {
+          label: "收盘价",
+          data: rows.map((item) => item.close),
+          borderColor: "#7457d9",
+          backgroundColor: "rgba(116, 87, 217, 0.12)",
+          pointRadius: 0,
+          borderWidth: 2,
+          tension: 0.25,
+          fill: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (item) => `$${formatNumber(item.raw)}` } },
+      },
+      scales: {
+        x: { ticks: { maxTicksLimit: 8 } },
+        y: { ticks: { callback: (value) => `$${formatNumber(value)}` } },
+      },
+    },
+  });
 }
 
 function assetLink(asset) {
@@ -394,6 +552,7 @@ function sectionHtml(sections) {
 function renderCharts() {
   renderScoreBubbleChart();
   renderThemeAssetChart();
+  renderCompanyMarketCharts(selectedCompany());
 }
 
 function destroyChart(id) {

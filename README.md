@@ -7,6 +7,7 @@
 - 覆盖 47 个资料文件，约 630MB。
 - 覆盖 6 个主题：AI Agent、AI PC、网络安全、商业航空、机器人、交易记录。
 - 自动抽取 Word 中的段落摘要、财务表格、关键指标、风险提示，并生成中文评分。
+- 自动联网补充最新 SEC 财报、TTM 盈利率、估值倍数、价格走势、波动率和最大回撤。
 - 前端包含主题地图、公司深研、动态图表、资料库、PDF/Word/视频入口。
 - 后端提供 `/api/catalog` 和 `/api/rebuild`，点击网页右上角“更新”即可重新扫描资料源。
 
@@ -29,7 +30,15 @@ http://127.0.0.1:8088
 
 ```powershell
 C:\Users\14446\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe tools\build_data.py --source D:\美股基本面分析
+C:\Users\14446\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe tools\build_market_data.py
 ```
+
+市场数据来源：
+
+- SEC submissions：最新 10-Q、10-K、20-F、6-K 等财报链接和报告日期。
+- SEC companyfacts：TTM 营收、利润、现金流、权益、股本等 XBRL 财务数据。
+- Nasdaq summary：市值、52 周高点、成交量等行情摘要。
+- Yahoo chart：历史价格，用于计算 30/90 日年化波动率、90 日最大回撤和价格走势图。
 
 ## 部署说明
 

@@ -101,6 +101,32 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         if completed.returncode != 0:
             self.write_json(payload, status=500)
             return
+        market_command = [
+            sys.executable,
+            str(ROOT / "tools" / "build_market_data.py"),
+            "--catalog",
+            str(CATALOG_PATH),
+        ]
+        try:
+            market_completed = subprocess.run(
+                market_command,
+                cwd=str(ROOT),
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=int(os.environ.get("MARKET_REBUILD_TIMEOUT", "540")),
+                check=False,
+            )
+            market_stdout = market_completed.stdout.strip()
+            try:
+                payload["market"] = json.loads(market_stdout.splitlines()[-1]) if market_stdout else {}
+            except json.JSONDecodeError:
+                payload["market"] = {"stdout": market_stdout}
+            payload["market_return_code"] = market_completed.returncode
+            if market_completed.stderr.strip():
+                payload["market_stderr"] = market_completed.stderr.strip()
+        except subprocess.TimeoutExpired:
+            payload["market"] = {"ok": False, "error": "市场数据更新超时，已保留上一次数据。"}
         self.write_json(payload)
 
     def write_json(self, payload: object, status: int = 200) -> None:
