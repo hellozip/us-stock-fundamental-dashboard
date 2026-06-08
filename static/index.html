@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>美股基本面研究驾驶舱</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script async src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script async src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#dashboard" aria-label="返回驾驶舱">
+        <span class="brand-mark">US</span>
+        <span>
+          <strong>美股基本面研究驾驶舱</strong>
+          <small>AI 基础设施、网络安全、航空、机器人</small>
+        </span>
+      </a>
+      <nav class="nav">
+        <a href="#map">主题地图</a>
+        <a href="#companies">公司深研</a>
+        <a href="#charts">动态图表</a>
+        <a href="#library">资料库</a>
+      </nav>
+      <button class="icon-button" id="refreshButton" type="button" title="更新资料">
+        <i data-lucide="refresh-cw"></i>
+        <span>更新</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="dashboard-band" id="dashboard">
+        <div class="dashboard-shell">
+          <div class="dashboard-head">
+            <div>
+              <p class="eyebrow">Research Terminal</p>
+              <h1>把本地研报资料变成可筛选、可画图、可更新的交互式网页</h1>
+            </div>
+            <div class="status-panel">
+              <span id="updateStatus">正在读取数据...</span>
+              <small id="generatedAt">-</small>
+            </div>
+          </div>
+
+          <div class="kpi-grid" id="kpiGrid"></div>
+
+          <div class="control-row">
+            <label class="search-box">
+              <i data-lucide="search"></i>
+              <input id="searchInput" type="search" placeholder="搜索公司、Ticker、主题或报告标题" />
+            </label>
+            <div class="segmented" id="themeFilters"></div>
+          </div>
+
+          <div class="first-view-grid">
+            <section class="panel">
+              <div class="panel-title">
+                <span>综合评分排序</span>
+                <small>评分越高越靠前</small>
+              </div>
+              <div class="rank-list" id="rankList"></div>
+            </section>
+            <section class="panel visual-panel">
+              <div class="panel-title">
+                <span>研究资料视觉墙</span>
+                <small>来自文件夹内图片与视频</small>
+              </div>
+              <div class="media-wall" id="mediaWall"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-band" id="map">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">Theme Map</p>
+            <h2>主题地图</h2>
+          </div>
+          <div class="theme-map" id="themeMap"></div>
+        </div>
+      </section>
+
+      <section class="content-band alt" id="companies">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">Deep Dive</p>
+            <h2>公司与专题深研</h2>
+          </div>
+          <div class="detail-layout">
+            <aside class="company-list" id="companyList"></aside>
+            <article class="detail-panel" id="detailPanel"></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-band" id="charts">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">Dynamic Charts</p>
+            <h2>动态图表</h2>
+          </div>
+          <div class="chart-grid">
+            <section class="panel chart-panel">
+              <div class="panel-title">
+                <span>评分矩阵</span>
+                <small>横轴增长，纵轴 AI 暴露度，气泡代表综合评分</small>
+              </div>
+              <canvas id="scoreBubbleChart"></canvas>
+            </section>
+            <section class="panel chart-panel">
+              <div class="panel-title">
+                <span>主题资料覆盖</span>
+                <small>按主题统计 Word、PDF、视频、图片等资产</small>
+              </div>
+              <canvas id="themeAssetChart"></canvas>
+            </section>
+          </div>
+          <section class="panel table-panel">
+            <div class="panel-title">
+              <span>表格数据预览</span>
+              <small>来自 Word / CSV / Excel 中的原始数字分析</small>
+            </div>
+            <div class="table-preview" id="tablePreview"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="content-band alt" id="library">
+        <div class="section-inner">
+          <div class="section-head">
+            <p class="eyebrow">Library</p>
+            <h2>资料库</h2>
+          </div>
+          <div class="asset-toolbar">
+            <div class="segmented" id="assetTypeFilters"></div>
+          </div>
+          <div class="asset-table-wrap">
+            <table class="asset-table">
+              <thead>
+                <tr>
+                  <th>标题</th>
+                  <th>类型</th>
+                  <th>主题</th>
+                  <th>Ticker</th>
+                  <th>大小</th>
+                  <th>打开</th>
+                </tr>
+              </thead>
+              <tbody id="assetTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <template id="metricTemplate">
+      <div class="metric-tile">
+        <small></small>
+        <strong></strong>
+      </div>
+    </template>
+
+    <script defer src="app.js"></script>
+  </body>
+</html>

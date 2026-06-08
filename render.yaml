@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: us-stock-fundamental-dashboard
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: REBUILD_TIMEOUT
+        value: "240"
