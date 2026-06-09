@@ -560,6 +560,37 @@ def enrich_catalog(catalog: dict[str, Any], market: dict[str, Any]) -> None:
     catalog.setdefault("stats", {})["market_company_count"] = len(by_ticker)
 
 
+def load_previous_market_data(output: Path) -> dict[str, Any]:
+    if not output.exists():
+        return {}
+    try:
+        return json.loads(output.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def merge_previous_chart_data(ticker: str, current: dict[str, Any], previous: dict[str, Any]) -> dict[str, Any]:
+    previous_company = (previous.get("companies") or {}).get(ticker)
+    if not previous_company or previous_company.get("error"):
+        return current
+    if current.get("price_history") or not previous_company.get("price_history"):
+        return current
+
+    current["price_history"] = previous_company.get("price_history", [])
+    current["volatility"] = previous_company.get("volatility", {})
+    current.setdefault("source_notes", {})["price_history_fallback"] = (
+        "Previous successful Yahoo chart data reused because the latest chart response was empty."
+    )
+    current.setdefault("fallbacks", {})["price_history"] = previous_company.get("updated_at")
+
+    previous_valuation = previous_company.get("valuation") or {}
+    valuation = current.setdefault("valuation", {})
+    for key in ["价格", "浠锋牸"]:
+        if valuation.get(key) is None and previous_valuation.get(key) is not None:
+            valuation[key] = previous_valuation.get(key)
+    return current
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="抓取最新财报、估值和波动率数据并写入仪表盘")
     parser.add_argument("--catalog", default=str(CATALOG_PATH), help="catalog.json 路径")
@@ -572,6 +603,8 @@ def main() -> int:
     tickers = sorted({company.get("ticker") for company in catalog.get("companies", []) if company.get("ticker")})
     cache_dir = DATA_DIR / "cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
+    output = Path(args.output)
+    previous_market = load_previous_market_data(output)
     ticker_map = load_ticker_map(cache_dir, refresh=args.refresh)
 
     companies: dict[str, Any] = {}
@@ -579,10 +612,20 @@ def main() -> int:
     for ticker in tickers:
         try:
             print(f"Fetching {ticker}...", file=sys.stderr)
-            companies[ticker] = build_company_market_data(ticker, cache_dir, ticker_map, args.refresh)
+            companies[ticker] = merge_previous_chart_data(
+                ticker,
+                build_company_market_data(ticker, cache_dir, ticker_map, args.refresh),
+                previous_market,
+            )
         except Exception as exc:  # keep the dashboard usable
             errors[ticker] = str(exc)
-            companies[ticker] = {"ticker": ticker, "error": str(exc), "updated_at": datetime.now(timezone.utc).isoformat()}
+            previous_company = (previous_market.get("companies") or {}).get(ticker)
+            if previous_company and not previous_company.get("error"):
+                companies[ticker] = dict(previous_company)
+                companies[ticker].setdefault("fallbacks", {})["latest_refresh_error"] = str(exc)
+                companies[ticker]["fallback_updated_at"] = datetime.now(timezone.utc).isoformat()
+            else:
+                companies[ticker] = {"ticker": ticker, "error": str(exc), "updated_at": datetime.now(timezone.utc).isoformat()}
 
     market = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -596,7 +639,6 @@ def main() -> int:
             "Nasdaq summary": "https://api.nasdaq.com/api/quote/{ticker}/summary?assetclass=stocks",
         },
     }
-    output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(market, ensure_ascii=False, indent=2), encoding="utf-8")
     enrich_catalog(catalog, market)

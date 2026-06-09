@@ -44,6 +44,17 @@ TICKER_HINTS = {
     "ANET": ("ANET", "Arista Networks"),
     "Astera": ("ALAB", "Astera Labs"),
     "ALAB": ("ALAB", "Astera Labs"),
+    "AMETEK": ("AME", "AMETEK"),
+    "AME": ("AME", "AMETEK"),
+    "Cognex": ("CGNX", "Cognex"),
+    "CGNX": ("CGNX", "Cognex"),
+    "康耐视": ("CGNX", "Cognex"),
+    "Rockwell": ("ROK", "Rockwell Automation"),
+    "ROK": ("ROK", "Rockwell Automation"),
+    "罗克韦尔": ("ROK", "Rockwell Automation"),
+    "Teradyne": ("TER", "Teradyne"),
+    "TER": ("TER", "Teradyne"),
+    "泰瑞达": ("TER", "Teradyne"),
     "Qualcomm": ("QCOM", "Qualcomm"),
     "高通": ("QCOM", "Qualcomm"),
     "TSMC": ("TSM", "Taiwan Semiconductor Manufacturing"),
@@ -75,6 +86,8 @@ THEME_LABELS = {
     "网络安全": "网络安全",
     "商业航空": "商业航空",
     "韩国机器人": "机器人",
+    "物理AI": "物理AI",
+    "光通信板块": "光通信",
     "交易": "交易记录",
 }
 
@@ -472,7 +485,7 @@ def read_tabular_asset(path: Path) -> dict[str, Any]:
 def group_key_for_asset(asset: dict[str, Any]) -> str:
     ticker = asset.get("ticker")
     if ticker:
-        return ticker
+        return f"{slugify(asset.get('theme') or 'theme', 'theme')}:{ticker}"
     parts = asset["relative_path"].split("/")
     if len(parts) >= 2:
         return f"topic-{slugify(parts[-2], 'topic')}"
@@ -497,7 +510,7 @@ def company_record_from_group(group_id: str, assets: list[dict[str, Any]], doc_d
     tables = doc_data.get("tables", []) if doc_data else []
 
     return {
-        "id": slugify(ticker or group_id, "company"),
+        "id": slugify(group_id, "company"),
         "group_id": group_id,
         "ticker": ticker,
         "name": name,

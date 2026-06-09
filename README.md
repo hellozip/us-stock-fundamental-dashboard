@@ -40,6 +40,12 @@ C:\Users\14446\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\p
 - Nasdaq summary：市值、52 周高点、成交量等行情摘要。
 - Yahoo chart：历史价格，用于计算 30/90 日年化波动率、90 日最大回撤和价格走势图。
 
+### 更新按钮的使用方式
+
+- 打开本地后端页面 `http://127.0.0.1:8088` 时，右上角“更新”会直接运行 Python 后端，重新扫描资料并刷新市场数据。
+- 打开 GitHub Pages 静态页面时，浏览器本身不能运行 Python。新版按钮会尝试连接本机 `http://127.0.0.1:8088`；如果本地后端没有启动，会显示原因和处理方式。
+- 公网页面要永久同步更新，仍需要把本地生成后的 `static/data/catalog.json`、`static/data/market_data.json` 和新增资产提交到 GitHub。
+
 ## 部署说明
 
 GitHub Pages 可以直接展示静态页面、已生成的数据和已复制的资料资产，但不能运行后端更新接口。  

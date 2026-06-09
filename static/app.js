@@ -5,6 +5,7 @@ const state = {
   search: "",
   selectedId: null,
   charts: {},
+  catalogAssetBase: "",
 };
 
 const els = {
@@ -78,6 +79,61 @@ function normalizedText(...parts) {
   return parts.join(" ").toLowerCase();
 }
 
+function isLocalBackendPage() {
+  return ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname);
+}
+
+function trimTrailingSlash(value) {
+  return String(value || "").replace(/\/+$/, "");
+}
+
+function configuredApiBase() {
+  const params = new URLSearchParams(window.location.search);
+  return trimTrailingSlash(params.get("api") || "");
+}
+
+function candidateBackendBases() {
+  const bases = [];
+  const configured = configuredApiBase();
+  if (configured) bases.push(configured);
+  if (isLocalBackendPage()) bases.push("");
+  bases.push("http://127.0.0.1:8088", "http://localhost:8088");
+  return [...new Set(bases)];
+}
+
+function apiPath(base, path) {
+  return `${trimTrailingSlash(base)}${path}`;
+}
+
+function resolveAssetUrl(url) {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  const base = trimTrailingSlash(state.catalogAssetBase);
+  if (!base) return url;
+  return `${base}/${url.replace(/^\/+/, "")}`;
+}
+
+async function readJsonResponse(response, context) {
+  const text = await response.text();
+  const contentType = response.headers.get("content-type") || "";
+  const trimmed = text.trim();
+  if (!trimmed) {
+    if (!response.ok) throw new Error(`${context}失败：HTTP ${response.status}`);
+    return {};
+  }
+  if (trimmed.startsWith("<")) {
+    const pageType = trimmed.slice(0, 80).replace(/\s+/g, " ");
+    throw new Error(
+      `${context}没有连到 Python 后端，而是拿到网页 HTML（${pageType}...）。请打开 http://127.0.0.1:8088 更新，或在公网页面 URL 后加 ?api=http://127.0.0.1:8088。`
+    );
+  }
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    throw new Error(`${context}返回的不是有效 JSON：${error.message}${contentType ? `；Content-Type=${contentType}` : ""}`);
+  }
+}
+
 function visibleCompanies() {
   const catalog = state.catalog;
   if (!catalog) return [];
@@ -98,16 +154,24 @@ function visibleCompanies() {
   });
 }
 
-async function loadCatalog() {
+async function loadCatalog(preferredBase = null) {
   setStatus("正在读取数据...");
+  if (preferredBase !== null) {
+    const response = await fetch(apiPath(preferredBase, "/api/catalog"), { cache: "no-store", mode: "cors" });
+    if (!response.ok) throw new Error(`API ${response.status}`);
+    state.catalogAssetBase = preferredBase || "";
+    return await readJsonResponse(response, "读取后端数据");
+  }
   try {
     const response = await fetch("/api/catalog", { cache: "no-store" });
     if (!response.ok) throw new Error(`API ${response.status}`);
-    return await response.json();
+    state.catalogAssetBase = "";
+    return await readJsonResponse(response, "读取后端数据");
   } catch (error) {
     const response = await fetch("data/catalog.json", { cache: "no-store" });
     if (!response.ok) throw error;
-    return await response.json();
+    state.catalogAssetBase = "";
+    return await readJsonResponse(response, "读取静态数据");
   }
 }
 
@@ -221,10 +285,11 @@ function renderMediaWall() {
   els.mediaWall.innerHTML = media
     .map((asset) => {
       const label = escapeHtml(asset.title);
+      const url = resolveAssetUrl(asset.url);
       if (asset.type === "image") {
-        return `<a class="media-thumb" href="${asset.url}" target="_blank" rel="noreferrer"><img src="${asset.url}" alt="${label}" loading="lazy"><span>${label}</span></a>`;
+        return `<a class="media-thumb" href="${url}" target="_blank" rel="noreferrer"><img src="${url}" alt="${label}" loading="lazy"><span>${label}</span></a>`;
       }
-      return `<a class="media-thumb" href="${asset.url}" target="_blank" rel="noreferrer"><video src="${asset.url}" muted playsinline preload="metadata"></video><span>${label}</span></a>`;
+      return `<a class="media-thumb" href="${url}" target="_blank" rel="noreferrer"><video src="${url}" muted playsinline preload="metadata"></video><span>${label}</span></a>`;
     })
     .join("");
 }
@@ -331,9 +396,9 @@ function renderDetail(company) {
   const video = (company.assets || []).find((asset) => asset.type === "video");
   const image = (company.assets || []).find((asset) => asset.type === "image");
   const mediaHtml = video
-    ? `<video class="detail-media" src="${video.url}" controls preload="metadata"></video>`
+    ? `<video class="detail-media" src="${resolveAssetUrl(video.url)}" controls preload="metadata"></video>`
     : image
-      ? `<img class="detail-media" src="${image.url}" alt="${escapeHtml(image.title)}" loading="lazy">`
+      ? `<img class="detail-media" src="${resolveAssetUrl(image.url)}" alt="${escapeHtml(image.title)}" loading="lazy">`
       : "";
   const points = listHtml(company.key_points);
   const risks = listHtml(company.risks);
@@ -526,7 +591,7 @@ function renderPriceLine(canvasId, history) {
 function assetLink(asset) {
   const icon = typeIcons[asset.type] || "file";
   const label = typeLabels[asset.type] || asset.type.toUpperCase();
-  return `<a href="${asset.url}" target="_blank" rel="noreferrer"><i data-lucide="${icon}"></i>${escapeHtml(label)}</a>`;
+  return `<a href="${resolveAssetUrl(asset.url)}" target="_blank" rel="noreferrer"><i data-lucide="${icon}"></i>${escapeHtml(label)}</a>`;
 }
 
 function listHtml(items) {
@@ -722,7 +787,7 @@ function renderAssetTable() {
           <td>${escapeHtml(asset.theme)}</td>
           <td>${escapeHtml(asset.ticker || "-")}</td>
           <td>${formatBytes(asset.size_bytes)}</td>
-          <td><a class="open-link" href="${asset.url}" target="_blank" rel="noreferrer"><i data-lucide="${typeIcons[asset.type] || "file"}"></i>打开</a></td>
+          <td><a class="open-link" href="${resolveAssetUrl(asset.url)}" target="_blank" rel="noreferrer"><i data-lucide="${typeIcons[asset.type] || "file"}"></i>打开</a></td>
         </tr>
       `
     )
@@ -732,17 +797,43 @@ function renderAssetTable() {
   }
 }
 
+async function findRebuildBackend() {
+  const errors = [];
+  for (const base of candidateBackendBases()) {
+    try {
+      const response = await fetch(apiPath(base, "/api/health"), { cache: "no-store", mode: "cors" });
+      if (response.ok) {
+        const health = await readJsonResponse(response, "检测后端");
+        if (health?.ok === true) return base;
+        errors.push(`${base || "当前页面"}: 健康检查不是后端 JSON`);
+      } else {
+        errors.push(`${base || "当前页面"}: ${response.status}`);
+      }
+    } catch (error) {
+      errors.push(`${base || "当前页面"}: ${error.message}`);
+    }
+  }
+  const message = isLocalBackendPage()
+    ? "没有找到可用后端，请确认本地 Python 服务仍在运行。"
+    : "当前是 GitHub Pages 静态页面，不能直接运行 Python 更新代码。请先在本机启动 app.py，然后打开 http://127.0.0.1:8088 使用更新；或在 URL 后追加 ?api=http://127.0.0.1:8088 再尝试。";
+  throw new Error(`${message} ${errors.length ? `检测结果：${errors.join("；")}` : ""}`);
+}
+
 async function rebuildCatalog() {
   els.refreshButton.disabled = true;
-  setStatus("正在更新资料，文件较多时需要一点时间...");
+  setStatus("正在寻找可用后端...");
   try {
-    const response = await fetch("/api/rebuild", { method: "POST" });
-    const payload = await response.json();
+    const base = await findRebuildBackend();
+    setStatus("正在更新资料和市场数据，文件较多时需要一点时间...");
+    const response = await fetch(apiPath(base, "/api/rebuild"), { method: "POST", mode: "cors" });
+    const payload = await readJsonResponse(response, "更新接口");
     if (!response.ok || payload.ok === false) {
       throw new Error(payload.error || payload.stderr || "更新失败");
     }
-    setStatus(`更新完成：${payload.files} 个文件，${payload.companies} 家公司`);
-    state.catalog = await loadCatalog();
+    const marketText = payload.market?.tickers ? `，市场数据 ${payload.market.tickers} 只股票` : "";
+    const localNote = base ? "（已连接本机后端；公开网页要同步更新仍需提交 GitHub）" : "";
+    setStatus(`更新完成：${payload.files} 个文件，${payload.companies} 家公司${marketText}${localNote}`);
+    state.catalog = await loadCatalog(base);
     render();
   } catch (error) {
     setStatus(`更新失败：${error.message}`, true);
