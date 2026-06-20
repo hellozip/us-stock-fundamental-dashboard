@@ -20,6 +20,9 @@ STATIC_ROOT = PROJECT_ROOT / "static"
 DATA_DIR = STATIC_ROOT / "data"
 ASSET_ROOT = STATIC_ROOT / "assets"
 DEFAULT_SOURCE = Path(os.environ.get("CONTENT_SOURCE", r"D:\美股基本面分析"))
+MEDIA_RELEASE_BASE = (
+    "https://github.com/hellozip/us-stock-fundamental-dashboard/releases/download/media-v1"
+)
 
 
 try:
@@ -44,6 +47,9 @@ TICKER_HINTS = {
     "ANET": ("ANET", "Arista Networks"),
     "Astera": ("ALAB", "Astera Labs"),
     "ALAB": ("ALAB", "Astera Labs"),
+    "Dell": ("DELL", "Dell Technologies"),
+    "DELL": ("DELL", "Dell Technologies"),
+    "戴尔": ("DELL", "Dell Technologies"),
     "AMETEK": ("AME", "AMETEK"),
     "AME": ("AME", "AMETEK"),
     "Cognex": ("CGNX", "Cognex"),
@@ -55,6 +61,42 @@ TICKER_HINTS = {
     "Teradyne": ("TER", "Teradyne"),
     "TER": ("TER", "Teradyne"),
     "泰瑞达": ("TER", "Teradyne"),
+    "FormFactor": ("FORM", "FormFactor"),
+    "FormFactor": ("FORM", "FormFactor"),
+    "FORM": ("FORM", "FormFactor"),
+    "Keysight": ("KEYS", "Keysight Technologies"),
+    "KEYS": ("KEYS", "Keysight Technologies"),
+    "Lumentum": ("LITE", "Lumentum"),
+    "Lumentun": ("LITE", "Lumentum"),
+    "LITE": ("LITE", "Lumentum"),
+    "Coherent": ("COHR", "Coherent"),
+    "COHR": ("COHR", "Coherent"),
+    "Seagate": ("STX", "Seagate Technology"),
+    "希捷": ("STX", "Seagate Technology"),
+    "STX": ("STX", "Seagate Technology"),
+    "Sandisk": ("SNDK", "SanDisk"),
+    "SanDisk": ("SNDK", "SanDisk"),
+    "闪迪": ("SNDK", "SanDisk"),
+    "SNDK": ("SNDK", "SanDisk"),
+    "SK hynix": ("000660.KS", "SK hynix"),
+    "SK_hynix": ("000660.KS", "SK hynix"),
+    "SK海力士": ("000660.KS", "SK hynix"),
+    "海力士": ("000660.KS", "SK hynix"),
+    "000660": ("000660.KS", "SK hynix"),
+    "CoreWeave": ("CRWV", "CoreWeave"),
+    "coreweave": ("CRWV", "CoreWeave"),
+    "CRWV": ("CRWV", "CoreWeave"),
+    "Nebius": ("NBIS", "Nebius Group"),
+    "NBIS": ("NBIS", "Nebius Group"),
+    "IREN": ("IREN", "IREN"),
+    "AST SpaceMobile": ("ASTS", "AST SpaceMobile"),
+    "ASTSpaceMobile": ("ASTS", "AST SpaceMobile"),
+    "ASTS": ("ASTS", "AST SpaceMobile"),
+    "RocketLab": ("RKLB", "Rocket Lab"),
+    "Rocket Lab": ("RKLB", "Rocket Lab"),
+    "RKLB": ("RKLB", "Rocket Lab"),
+    "Momentus": ("MNTS", "Momentus"),
+    "MNTS": ("MNTS", "Momentus"),
     "Qualcomm": ("QCOM", "Qualcomm"),
     "高通": ("QCOM", "Qualcomm"),
     "TSMC": ("TSM", "Taiwan Semiconductor Manufacturing"),
@@ -85,9 +127,15 @@ THEME_LABELS = {
     "AI PC": "AI PC",
     "网络安全": "网络安全",
     "商业航空": "商业航空",
+    "商业航天": "商业航天",
     "韩国机器人": "机器人",
     "物理AI": "物理AI",
     "光通信板块": "光通信",
+    "CPO封装": "CPO封装",
+    "内存": "内存",
+    "电力基建": "电力基建",
+    "端侧AI": "端侧AI",
+    "AI算力链": "AI算力链",
     "交易": "交易记录",
 }
 
@@ -422,7 +470,8 @@ def copy_asset(path: Path, source_root: Path, copy_files: bool) -> dict[str, Any
         target_dir.mkdir(parents=True, exist_ok=True)
         if not target.exists() or target.stat().st_size != path.stat().st_size:
             shutil.copy2(path, target)
-    url = f"assets/{theme_slug}/{group_slug}/{target_name}"
+    relative_url = f"assets/{theme_slug}/{group_slug}/{target_name}"
+    url = f"{MEDIA_RELEASE_BASE}/{target_name}" if asset_type == "video" else relative_url
     return {
         "id": digest(str(path)),
         "title": path.name,
@@ -494,8 +543,9 @@ def group_key_for_asset(asset: dict[str, Any]) -> str:
 
 def company_record_from_group(group_id: str, assets: list[dict[str, Any]], doc_data: dict[str, Any] | None) -> dict[str, Any]:
     first = assets[0]
-    ticker = doc_data.get("ticker") if doc_data else first.get("ticker")
-    name = doc_data.get("name") if doc_data else first.get("company_name")
+    asset_ticker = first.get("ticker")
+    ticker = (doc_data.get("ticker") if doc_data and asset_ticker else None) or asset_ticker
+    name = (doc_data.get("name") if doc_data and asset_ticker else None) or first.get("company_name")
     if not name or name == first["title"]:
         name = first.get("company_name") or first["relative_path"].split("/")[-2]
     title = doc_data.get("title") if doc_data else name
@@ -561,8 +611,9 @@ def build_catalog(source_root: Path, copy_files: bool = True) -> dict[str, Any]:
                 "paragraph_count": doc_info.get("paragraph_count"),
                 "table_count": doc_info.get("table_count"),
             }
-            asset["ticker"] = doc_info.get("ticker") or asset.get("ticker")
-            asset["company_name"] = doc_info.get("name") or asset.get("company_name")
+            if asset.get("ticker"):
+                asset["ticker"] = doc_info.get("ticker") or asset.get("ticker")
+                asset["company_name"] = doc_info.get("name") or asset.get("company_name")
             doc_payloads[asset["id"]] = doc_info
         assets.append(asset)
 

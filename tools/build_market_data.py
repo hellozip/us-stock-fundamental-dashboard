@@ -339,7 +339,9 @@ def nasdaq_summary(ticker: str) -> dict[str, Any]:
         payload = request_json(url, headers=NASDAQ_HEADERS, timeout=45)
     except Exception:
         return {}
-    data = payload.get("data", {})
+    data = payload.get("data") or {}
+    if not isinstance(data, dict):
+        return {}
     summary = data.get("summaryData", {}) or {}
     out: dict[str, Any] = {"symbol": data.get("symbol")}
     for key, node in summary.items():
