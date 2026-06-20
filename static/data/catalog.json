@@ -967,13 +967,21 @@
       ],
       "market_data": {
         "ticker": "CRWD",
-        "updated_at": "2026-06-20T15:25:34.064551+00:00",
+        "updated_at": "2026-06-20T16:05:52.707845+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-06-04",
           "report_date": "2026-04-30",
           "accession": "0001535527-26-000025",
           "url": "https://www.sec.gov/Archives/edgar/data/1535527/000153552726000025/crwd-20260430.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-05",
+          "report_date": "2026-01-31",
+          "accession": "0001535527-26-000010",
+          "url": "https://www.sec.gov/Archives/edgar/data/1535527/000153552726000010/crwd-20260131.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 4892259000.0,
@@ -2470,13 +2478,21 @@
       ],
       "market_data": {
         "ticker": "NVDA",
-        "updated_at": "2026-06-20T15:26:18.651886+00:00",
+        "updated_at": "2026-06-20T16:06:58.124341+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-20",
           "report_date": "2026-04-26",
           "accession": "0001045810-26-000052",
           "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000052/nvda-20260426.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-25",
+          "report_date": "2026-01-25",
+          "accession": "0001045810-26-000021",
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 229426000000.0,
@@ -4293,13 +4309,21 @@
       ],
       "market_data": {
         "ticker": "DELL",
-        "updated_at": "2026-06-20T15:25:44.990813+00:00",
+        "updated_at": "2026-06-20T16:06:04.567331+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-06-09",
           "report_date": "2026-05-01",
           "accession": "0001571996-26-000030",
           "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000030/dell-20260501.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-16",
+          "report_date": "2026-01-30",
+          "accession": "0001571996-26-000008",
+          "url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000008/dell-20260130.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 124001000000.0,
@@ -5814,13 +5838,21 @@
       ],
       "market_data": {
         "ticker": "ALAB",
-        "updated_at": "2026-06-20T15:24:32.712171+00:00",
+        "updated_at": "2026-06-20T16:05:27.540274+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-31",
           "accession": "0001736297-26-000020",
           "url": "https://www.sec.gov/Archives/edgar/data/1736297/000173629726000020/alab-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-20",
+          "report_date": "2025-12-31",
+          "accession": "0001736297-26-000010",
+          "url": "https://www.sec.gov/Archives/edgar/data/1736297/000173629726000010/alab-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 890303000.0,
@@ -7597,13 +7629,21 @@
       ],
       "market_data": {
         "ticker": "LITE",
-        "updated_at": "2026-06-20T15:26:00.683496+00:00",
+        "updated_at": "2026-06-20T16:06:27.238199+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-28",
           "accession": "0001628280-26-030777",
           "url": "https://www.sec.gov/Archives/edgar/data/1633978/000162828026030777/lite-20260328.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-08-19",
+          "report_date": "2025-06-28",
+          "accession": "0001628280-25-040830",
+          "url": "https://www.sec.gov/Archives/edgar/data/1633978/000162828025040830/lite-20250628.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 2432900000.0,
@@ -9191,13 +9231,21 @@
       ],
       "market_data": {
         "ticker": "TSM",
-        "updated_at": "2026-06-20T15:27:23.493252+00:00",
+        "updated_at": "2026-06-20T16:07:31.947973+00:00",
         "latest_report": {
           "form": "6-K",
           "filing_date": "2026-06-04",
           "report_date": "2026-06-04",
           "accession": "0001046179-26-000302",
           "url": "https://www.sec.gov/Archives/edgar/data/1046179/000104617926000302/tsm-agmx20260604x6k.htm"
+        },
+        "annual_report": {
+          "form": "20-F",
+          "filing_date": "2026-04-16",
+          "report_date": "2025-12-31",
+          "accession": "0001628280-26-025362",
+          "url": "https://www.sec.gov/Archives/edgar/data/1046179/000162828026025362/tsm-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 2894307700000.0,
@@ -10588,13 +10636,21 @@
       ],
       "market_data": {
         "ticker": "MU",
-        "updated_at": "2026-06-20T15:26:12.950705+00:00",
+        "updated_at": "2026-06-20T16:06:49.536469+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-03-19",
           "report_date": "2026-02-26",
           "accession": "0000723125-26-000006",
           "url": "https://www.sec.gov/Archives/edgar/data/723125/000072312526000006/mu-20260226.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-10-03",
+          "report_date": "2025-08-28",
+          "accession": "0000723125-25-000028",
+          "url": "https://www.sec.gov/Archives/edgar/data/723125/000072312525000028/mu-20250828.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 54857000000.0,
@@ -12188,13 +12244,21 @@
       ],
       "market_data": {
         "ticker": "CRWV",
-        "updated_at": "2026-06-20T15:25:38.088274+00:00",
+        "updated_at": "2026-06-20T16:05:56.746195+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-08",
           "report_date": "2026-03-31",
           "accession": "0001769628-26-000222",
           "url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000222/crwv-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-02",
+          "report_date": "2025-12-31",
+          "accession": "0001769628-26-000104",
+          "url": "https://www.sec.gov/Archives/edgar/data/1769628/000176962826000104/crwv-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 5637464000.0,
@@ -14018,13 +14082,21 @@
       ],
       "market_data": {
         "ticker": "MRVL",
-        "updated_at": "2026-06-20T15:26:06.644736+00:00",
+        "updated_at": "2026-06-20T16:06:37.374904+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-28",
           "report_date": "2026-05-02",
           "accession": "0001835632-26-000019",
           "url": "https://www.sec.gov/Archives/edgar/data/1835632/000183563226000019/mrvl-20260502.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-11",
+          "report_date": "2026-01-31",
+          "accession": "0001835632-26-000011",
+          "url": "https://www.sec.gov/Archives/edgar/data/1835632/000183563226000011/mrvl-20260131.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 8393700000.0,
@@ -16075,13 +16147,21 @@
       ],
       "market_data": {
         "ticker": "UAL",
-        "updated_at": "2026-06-20T15:27:27.471159+00:00",
+        "updated_at": "2026-06-20T16:07:34.956817+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-22",
           "report_date": "2026-03-31",
           "accession": "0000100517-26-000091",
           "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000091/ual-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-12",
+          "report_date": "2025-12-31",
+          "accession": "0000100517-26-000023",
+          "url": "https://www.sec.gov/Archives/edgar/data/100517/000010051726000023/ual-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 58282000000.0,
@@ -17985,13 +18065,21 @@
       ],
       "market_data": {
         "ticker": "TER",
-        "updated_at": "2026-06-20T15:27:20.622497+00:00",
+        "updated_at": "2026-06-20T16:07:29.146340+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-01",
           "report_date": "2026-03-29",
           "accession": "0001193125-26-201058",
           "url": "https://www.sec.gov/Archives/edgar/data/97210/000119312526201058/ter-20260329.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-19",
+          "report_date": "2025-12-31",
+          "accession": "0001193125-26-059002",
+          "url": "https://www.sec.gov/Archives/edgar/data/97210/000119312526059002/ter-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 3389181000.0,
@@ -19428,13 +19516,21 @@
       ],
       "market_data": {
         "ticker": "MSFT",
-        "updated_at": "2026-06-20T15:26:09.981606+00:00",
+        "updated_at": "2026-06-20T16:06:42.872166+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-29",
           "report_date": "2026-03-31",
           "accession": "0001193125-26-191507",
           "url": "https://www.sec.gov/Archives/edgar/data/789019/000119312526191507/msft-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-07-30",
+          "report_date": "2025-06-30",
+          "accession": "0000950170-25-100235",
+          "url": "https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 311898000000.0,
@@ -21080,13 +21176,21 @@
       ],
       "market_data": {
         "ticker": "CGNX",
-        "updated_at": "2026-06-20T15:24:54.204657+00:00",
+        "updated_at": "2026-06-20T16:05:46.314621+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-07",
           "report_date": "2026-04-05",
           "accession": "0000851205-26-000040",
           "url": "https://www.sec.gov/Archives/edgar/data/851205/000085120526000040/cgnx-20260405.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-12",
+          "report_date": "2025-12-31",
+          "accession": "0000851205-26-000012",
+          "url": "https://www.sec.gov/Archives/edgar/data/851205/000085120526000012/cgnx-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 1010458000.0,
@@ -22699,13 +22803,21 @@
       ],
       "market_data": {
         "ticker": "ANET",
-        "updated_at": "2026-06-20T15:24:43.976106+00:00",
+        "updated_at": "2026-06-20T16:05:38.832397+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-31",
           "accession": "0001596532-26-000078",
           "url": "https://www.sec.gov/Archives/edgar/data/1596532/000159653226000078/anet-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-17",
+          "report_date": "2025-12-31",
+          "accession": "0001596532-26-000013",
+          "url": "https://www.sec.gov/Archives/edgar/data/1596532/000159653226000013/anet-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 9226900000.0,
@@ -24301,13 +24413,21 @@
       ],
       "market_data": {
         "ticker": "NBIS",
-        "updated_at": "2026-06-20T15:26:15.828863+00:00",
+        "updated_at": "2026-06-20T16:06:52.709155+00:00",
         "latest_report": {
           "form": "6-K",
           "filing_date": "2026-06-16",
           "report_date": "2026-06-16",
           "accession": "0001104659-26-074352",
           "url": "https://www.sec.gov/Archives/edgar/data/1513845/000110465926074352/tm2618059d1_6k.htm"
+        },
+        "annual_report": {
+          "form": "20-F",
+          "filing_date": "2026-04-30",
+          "report_date": "2025-12-31",
+          "accession": "0001104659-26-052948",
+          "url": "https://www.sec.gov/Archives/edgar/data/1513845/000110465926052948/nbis-20251231x20f.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 529800000.0,
@@ -27064,13 +27184,21 @@
       ],
       "market_data": {
         "ticker": "COHR",
-        "updated_at": "2026-06-20T15:25:31.025332+00:00",
+        "updated_at": "2026-06-20T16:05:49.400364+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-31",
           "accession": "0000820318-26-000013",
           "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031826000013/iivi-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-08-15",
+          "report_date": "2025-06-30",
+          "accession": "0000820318-25-000014",
+          "url": "https://www.sec.gov/Archives/edgar/data/820318/000082031825000014/iivi-20250630.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 6570527000.0,
@@ -28911,13 +29039,21 @@
       ],
       "market_data": {
         "ticker": "ALAB",
-        "updated_at": "2026-06-20T15:24:32.712171+00:00",
+        "updated_at": "2026-06-20T16:05:27.540274+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-31",
           "accession": "0001736297-26-000020",
           "url": "https://www.sec.gov/Archives/edgar/data/1736297/000173629726000020/alab-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-20",
+          "report_date": "2025-12-31",
+          "accession": "0001736297-26-000010",
+          "url": "https://www.sec.gov/Archives/edgar/data/1736297/000173629726000010/alab-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 890303000.0,
@@ -30460,13 +30596,21 @@
       ],
       "market_data": {
         "ticker": "IREN",
-        "updated_at": "2026-06-20T15:25:50.946749+00:00",
+        "updated_at": "2026-06-20T16:06:13.929102+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-08",
           "report_date": "2026-03-31",
           "accession": "0001878848-26-000026",
           "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884826000026/iren-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-08-28",
+          "report_date": "2025-06-30",
+          "accession": "0001878848-25-000063",
+          "url": "https://www.sec.gov/Archives/edgar/data/1878848/000187884825000063/iren-20250630.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 714605000.0,
@@ -32042,13 +32186,21 @@
       ],
       "market_data": {
         "ticker": "AMD",
-        "updated_at": "2026-06-20T15:24:35.554473+00:00",
+        "updated_at": "2026-06-20T16:05:30.801968+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-06",
           "report_date": "2026-03-28",
           "accession": "0000002488-26-000076",
           "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000076/amd-20260328.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-04",
+          "report_date": "2025-12-27",
+          "accession": "0000002488-26-000018",
+          "url": "https://www.sec.gov/Archives/edgar/data/2488/000000248826000018/amd-20251227.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 34622000000.0,
@@ -33562,8 +33714,9 @@
       ],
       "market_data": {
         "ticker": "000660.KS",
-        "updated_at": "2026-06-20T15:24:29.965637+00:00",
+        "updated_at": "2026-06-20T16:05:23.103460+00:00",
         "latest_report": null,
+        "annual_report": null,
         "financials": {
           "营收TTM": null,
           "毛利润TTM": null,
@@ -35387,13 +35540,21 @@
       ],
       "market_data": {
         "ticker": "STX",
-        "updated_at": "2026-06-20T15:27:16.729333+00:00",
+        "updated_at": "2026-06-20T16:07:25.897130+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-29",
           "report_date": "2026-04-03",
           "accession": "0001137789-26-000088",
           "url": "https://www.sec.gov/Archives/edgar/data/1137789/000113778926000088/stx-20260403.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-08-01",
+          "report_date": "2025-06-27",
+          "accession": "0001137789-25-000157",
+          "url": "https://www.sec.gov/Archives/edgar/data/1137789/000113778925000157/stx-20250627.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 10726000000.0,
@@ -37002,13 +37163,21 @@
       ],
       "market_data": {
         "ticker": "FORM",
-        "updated_at": "2026-06-20T15:25:48.129785+00:00",
+        "updated_at": "2026-06-20T16:06:09.494055+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-05",
           "report_date": "2026-03-28",
           "accession": "0001039399-26-000023",
           "url": "https://www.sec.gov/Archives/edgar/data/1039399/000103939926000023/form-20260328.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-20",
+          "report_date": "2025-12-27",
+          "accession": "0001039399-26-000009",
+          "url": "https://www.sec.gov/Archives/edgar/data/1039399/000103939926000009/form-20251227.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 795974000.0,
@@ -38636,13 +38805,21 @@
       ],
       "market_data": {
         "ticker": "ISRG",
-        "updated_at": "2026-06-20T15:25:53.865286+00:00",
+        "updated_at": "2026-06-20T16:06:18.249620+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-22",
           "report_date": "2026-03-31",
           "accession": "0001035267-26-000032",
           "url": "https://www.sec.gov/Archives/edgar/data/1035267/000103526726000032/isrg-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-03",
+          "report_date": "2025-12-31",
+          "accession": "0001035267-26-000010",
+          "url": "https://www.sec.gov/Archives/edgar/data/1035267/000103526726000010/isrg-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 9969300000.0,
@@ -40330,13 +40507,21 @@
       ],
       "market_data": {
         "ticker": "ROK",
-        "updated_at": "2026-06-20T15:26:29.577016+00:00",
+        "updated_at": "2026-06-20T16:07:12.911125+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-05",
           "report_date": "2026-03-31",
           "accession": "0001024478-26-000022",
           "url": "https://www.sec.gov/Archives/edgar/data/1024478/000102447826000022/rok-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-11-12",
+          "report_date": "2025-09-30",
+          "accession": "0001024478-25-000116",
+          "url": "https://www.sec.gov/Archives/edgar/data/1024478/000102447825000116/rok-20250930.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 8489000000.0,
@@ -41042,12 +41227,13 @@
             "sec_companyfacts": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001024478.json"
           },
           "price_source": "Yahoo Finance chart API",
-          "nasdaq_source": "https://api.nasdaq.com/api/quote/ROK/summary?assetclass=stocks"
+          "nasdaq_source": "https://api.nasdaq.com/api/quote/ROK/summary?assetclass=stocks",
+          "price_history_fallback": "Previous successful Yahoo chart data reused because the latest chart response was empty."
         },
         "display_metrics": [
           {
             "label": "最新价格",
-            "value": "$473.79",
+            "value": "-",
             "group": "行情"
           },
           {
@@ -41077,15 +41263,18 @@
           },
           {
             "label": "30日波动率",
-            "value": "32.27%",
+            "value": "-",
             "group": "波动率"
           },
           {
             "label": "90日回撤",
-            "value": "-15.53%",
+            "value": "-",
             "group": "波动率"
           }
-        ]
+        ],
+        "fallbacks": {
+          "price_history": "2026-06-20T15:26:29.577016+00:00"
+        }
       }
     },
     {
@@ -41839,13 +42028,21 @@
       ],
       "market_data": {
         "ticker": "QCOM",
-        "updated_at": "2026-06-20T15:26:21.704795+00:00",
+        "updated_at": "2026-06-20T16:07:02.221622+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-29",
           "report_date": "2026-03-29",
           "accession": "0000804328-26-000061",
           "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432826000061/qcom-20260329.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-11-05",
+          "report_date": "2025-09-28",
+          "accession": "0000804328-25-000085",
+          "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432825000085/qcom-20250928.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 44195000000.0,
@@ -43462,13 +43659,21 @@
       ],
       "market_data": {
         "ticker": "DAL",
-        "updated_at": "2026-06-20T15:25:42.014616+00:00",
+        "updated_at": "2026-06-20T16:06:01.185617+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-08",
           "report_date": "2026-03-31",
           "accession": "0000027904-26-000022",
           "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000022/dal-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-11",
+          "report_date": "2025-12-31",
+          "accession": "0000027904-26-000013",
+          "url": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000013/dal-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 63215000000.0,
@@ -44969,13 +45174,21 @@
       ],
       "market_data": {
         "ticker": "QCOM",
-        "updated_at": "2026-06-20T15:26:21.704795+00:00",
+        "updated_at": "2026-06-20T16:07:02.221622+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-29",
           "report_date": "2026-03-29",
           "accession": "0000804328-26-000061",
           "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432826000061/qcom-20260329.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-11-05",
+          "report_date": "2025-09-28",
+          "accession": "0000804328-25-000085",
+          "url": "https://www.sec.gov/Archives/edgar/data/804328/000080432825000085/qcom-20250928.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 44195000000.0,
@@ -47761,13 +47974,21 @@
       ],
       "market_data": {
         "ticker": "SNDK",
-        "updated_at": "2026-06-20T15:26:36.134500+00:00",
+        "updated_at": "2026-06-20T16:07:21.692733+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-01",
           "report_date": "2026-04-03",
           "accession": "0001628280-26-029401",
           "url": "https://www.sec.gov/Archives/edgar/data/2023554/000162828026029401/sndk-20260403.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-08-21",
+          "report_date": "2025-06-27",
+          "accession": "0002023554-25-000034",
+          "url": "https://www.sec.gov/Archives/edgar/data/2023554/000202355425000034/sndk-20250627.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 12978000000.0,
@@ -49504,13 +49725,21 @@
       ],
       "market_data": {
         "ticker": "RKLB",
-        "updated_at": "2026-06-20T15:26:25.233239+00:00",
+        "updated_at": "2026-06-20T16:07:05.860575+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-07",
           "report_date": "2026-03-31",
           "accession": "0001819994-26-000028",
           "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000028/rklb-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-26",
+          "report_date": "2025-12-31",
+          "accession": "0001819994-26-000013",
+          "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000013/rklb-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 622495000.0,
@@ -51684,13 +51913,21 @@
       ],
       "market_data": {
         "ticker": "AME",
-        "updated_at": "2026-06-20T15:24:38.738390+00:00",
+        "updated_at": "2026-06-20T16:05:35.229739+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-04-30",
           "report_date": "2026-03-31",
           "accession": "0001037868-26-000144",
           "url": "https://www.sec.gov/Archives/edgar/data/1037868/000103786826000144/ame-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-02-17",
+          "report_date": "2025-12-31",
+          "accession": "0001037868-26-000016",
+          "url": "https://www.sec.gov/Archives/edgar/data/1037868/000103786826000016/ame-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 7331105000.0,
@@ -53281,13 +53518,21 @@
       ],
       "market_data": {
         "ticker": "SERV",
-        "updated_at": "2026-06-20T15:26:32.410842+00:00",
+        "updated_at": "2026-06-20T16:07:18.244576+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-07",
           "report_date": "2026-03-31",
           "accession": "0001832483-26-000019",
           "url": "https://www.sec.gov/Archives/edgar/data/1832483/000183248326000019/serv-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-12",
+          "report_date": "2025-12-31",
+          "accession": "0001832483-26-000010",
+          "url": "https://www.sec.gov/Archives/edgar/data/1832483/000183248326000010/patr-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 4753000.0,
@@ -55811,13 +56056,21 @@
       ],
       "market_data": {
         "ticker": "KEYS",
-        "updated_at": "2026-06-20T15:25:57.309917+00:00",
+        "updated_at": "2026-06-20T16:06:24.035618+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-06-04",
           "report_date": "2026-04-30",
           "accession": "0001601046-26-000024",
           "url": "https://www.sec.gov/Archives/edgar/data/1601046/000160104626000024/keys-20260430.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2025-12-17",
+          "report_date": "2025-10-31",
+          "accession": "0001601046-25-000127",
+          "url": "https://www.sec.gov/Archives/edgar/data/1601046/000160104625000127/keys-20251031.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 5975000000.0,
@@ -59021,13 +59274,21 @@
       ],
       "market_data": {
         "ticker": "MNTS",
-        "updated_at": "2026-06-20T15:26:03.795877+00:00",
+        "updated_at": "2026-06-20T16:06:30.370935+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-13",
           "report_date": "2026-03-31",
           "accession": "0001628280-26-034490",
           "url": "https://www.sec.gov/Archives/edgar/data/1781162/000162828026034490/mnts-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-31",
+          "report_date": "2025-12-31",
+          "accession": "0001628280-26-022291",
+          "url": "https://www.sec.gov/Archives/edgar/data/1781162/000162828026022291/mnts-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 3962000.0,
@@ -60786,13 +61047,21 @@
       ],
       "market_data": {
         "ticker": "ASTS",
-        "updated_at": "2026-06-20T15:24:46.758204+00:00",
+        "updated_at": "2026-06-20T16:05:43.057702+00:00",
         "latest_report": {
           "form": "10-Q",
           "filing_date": "2026-05-11",
           "report_date": "2026-03-31",
           "accession": "0001193125-26-216950",
           "url": "https://www.sec.gov/Archives/edgar/data/1780312/000119312526216950/asts-20260331.htm"
+        },
+        "annual_report": {
+          "form": "10-K",
+          "filing_date": "2026-03-02",
+          "report_date": "2025-12-31",
+          "accession": "0001780312-26-000006",
+          "url": "https://www.sec.gov/Archives/edgar/data/1780312/000178031226000006/asts-20251231.htm",
+          "source": "SEC annual filing"
         },
         "financials": {
           "营收TTM": 31348000.0,
@@ -64395,5 +64664,5 @@
       }
     }
   ],
-  "market_data_generated_at": "2026-06-20T15:27:27.471159+00:00"
+  "market_data_generated_at": "2026-06-20T16:07:34.956817+00:00"
 }

@@ -297,29 +297,48 @@ def latest_ttm(entries: list[dict[str, Any]]) -> dict[str, Any] | None:
     return None
 
 
-def latest_filing(submissions: dict[str, Any]) -> dict[str, Any] | None:
+def filing_record(submissions: dict[str, Any], index: int) -> dict[str, Any]:
     recent = submissions.get("filings", {}).get("recent", {})
     forms = recent.get("form", [])
     dates = recent.get("filingDate", [])
     reports = recent.get("reportDate", [])
     accession = recent.get("accessionNumber", [])
     docs = recent.get("primaryDocument", [])
+    form = forms[index] if index < len(forms) else ""
+    accn = accession[index] if index < len(accession) else ""
+    cik = str(submissions.get("cik", "")).lstrip("0")
+    doc = docs[index] if index < len(docs) else ""
+    accession_clean = accn.replace("-", "")
+    url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_clean}/{doc}" if cik and accn and doc else ""
+    return {
+        "form": form,
+        "filing_date": dates[index] if index < len(dates) else "",
+        "report_date": reports[index] if index < len(reports) else "",
+        "accession": accn,
+        "url": url,
+    }
+
+
+def latest_filing(submissions: dict[str, Any]) -> dict[str, Any] | None:
+    recent = submissions.get("filings", {}).get("recent", {})
+    forms = recent.get("form", [])
     wanted = {"10-Q", "10-K", "20-F", "40-F", "6-K"}
     for index, form in enumerate(forms):
         if form not in wanted:
             continue
-        accn = accession[index] if index < len(accession) else ""
-        cik = str(submissions.get("cik", "")).lstrip("0")
-        doc = docs[index] if index < len(docs) else ""
-        accession_clean = accn.replace("-", "")
-        url = f"https://www.sec.gov/Archives/edgar/data/{cik}/{accession_clean}/{doc}" if cik and accn and doc else ""
-        return {
-            "form": form,
-            "filing_date": dates[index] if index < len(dates) else "",
-            "report_date": reports[index] if index < len(reports) else "",
-            "accession": accn,
-            "url": url,
-        }
+        return filing_record(submissions, index)
+    return None
+
+
+def latest_annual_filing(submissions: dict[str, Any]) -> dict[str, Any] | None:
+    recent = submissions.get("filings", {}).get("recent", {})
+    forms = recent.get("form", [])
+    wanted = {"10-K", "20-F", "40-F"}
+    for index, form in enumerate(forms):
+        if form in wanted:
+            record = filing_record(submissions, index)
+            record["source"] = "SEC annual filing"
+            return record
     return None
 
 
@@ -437,6 +456,7 @@ def sec_financials_for_ticker(ticker: str, cache_dir: Path, ticker_map: dict[str
         "cik": cik,
         "sec_name": item.get("title"),
         "latest_filing": latest_filing(submissions),
+        "annual_filing": latest_annual_filing(submissions),
         "metrics": {},
         "raw_sources": {
             "sec_submissions": f"https://data.sec.gov/submissions/CIK{cik}.json",
@@ -517,6 +537,7 @@ def build_company_market_data(ticker: str, cache_dir: Path, ticker_map: dict[str
         "ticker": ticker,
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "latest_report": sec.get("latest_filing"),
+        "annual_report": sec.get("annual_filing"),
         "financials": {
             "营收TTM": amount(revenue),
             "毛利润TTM": amount(gross_profit),

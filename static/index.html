@@ -19,6 +19,7 @@
       </a>
       <nav class="nav">
         <a href="#map">主题地图</a>
+        <a href="#annual-calendar">年报日历</a>
         <a href="#companies">公司深研</a>
         <a href="#charts">动态图表</a>
         <a href="#library">资料库</a>
@@ -79,6 +80,38 @@
             <h2>主题地图</h2>
           </div>
           <div class="theme-map" id="themeMap"></div>
+        </div>
+      </section>
+
+      <section class="content-band alt" id="annual-calendar">
+        <div class="section-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Annual Report Calendar</p>
+              <h2>年报日历</h2>
+            </div>
+            <p class="section-note">按最近一次年报披露日的月日，推算未来三年的年度报告观察窗口。</p>
+          </div>
+          <div class="calendar-toolbar">
+            <div class="calendar-summary" id="annualCalendarSummary"></div>
+            <div class="segmented calendar-months" id="calendarMonthButtons"></div>
+          </div>
+          <div class="annual-calendar-layout">
+            <section class="panel annual-calendar-panel">
+              <div class="panel-title">
+                <span id="annualCalendarTitle">年报日历</span>
+                <small>点击公司标记进入对应公司板块</small>
+              </div>
+              <div class="calendar-grid" id="annualCalendarGrid"></div>
+            </section>
+            <aside class="panel calendar-agenda">
+              <div class="panel-title">
+                <span>本月议程</span>
+                <small id="annualCalendarAgendaMeta">-</small>
+              </div>
+              <div class="calendar-agenda-list" id="annualCalendarAgenda"></div>
+            </aside>
+          </div>
         </div>
       </section>
 

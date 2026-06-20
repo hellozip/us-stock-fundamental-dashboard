@@ -4,6 +4,7 @@ const state = {
   assetType: "全部",
   search: "",
   selectedId: null,
+  calendarMonth: null,
   charts: {},
   catalogAssetBase: "",
 };
@@ -18,6 +19,12 @@ const els = {
   rankList: document.getElementById("rankList"),
   mediaWall: document.getElementById("mediaWall"),
   themeMap: document.getElementById("themeMap"),
+  calendarMonthButtons: document.getElementById("calendarMonthButtons"),
+  annualCalendarSummary: document.getElementById("annualCalendarSummary"),
+  annualCalendarTitle: document.getElementById("annualCalendarTitle"),
+  annualCalendarGrid: document.getElementById("annualCalendarGrid"),
+  annualCalendarAgenda: document.getElementById("annualCalendarAgenda"),
+  annualCalendarAgendaMeta: document.getElementById("annualCalendarAgendaMeta"),
   companyList: document.getElementById("companyList"),
   detailPanel: document.getElementById("detailPanel"),
   tablePreview: document.getElementById("tablePreview"),
@@ -191,6 +198,7 @@ function render() {
   renderRankList();
   renderMediaWall();
   renderThemeMap();
+  renderAnnualCalendar();
   renderCompanyList();
   ensureSelection();
   renderCharts();
@@ -316,6 +324,231 @@ function renderThemeMap() {
       `;
     })
     .join("");
+}
+
+function parseIsoDay(value) {
+  const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  const day = Number(match[3]);
+  const date = new Date(year, month, day);
+  if (Number.isNaN(date.getTime())) return null;
+  return date;
+}
+
+function monthKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function dayKey(date) {
+  return `${monthKey(date)}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function monthLabel(key) {
+  const [year, month] = key.split("-").map(Number);
+  return `${year}年${month}月`;
+}
+
+function daysInMonth(year, monthIndex) {
+  return new Date(year, monthIndex + 1, 0).getDate();
+}
+
+function calendarMonthOptions() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  return Array.from({ length: 36 }, (_item, index) => {
+    const date = new Date(start.getFullYear(), start.getMonth() + index, 1);
+    return { key: monthKey(date), label: monthLabel(monthKey(date)), date };
+  });
+}
+
+function annualCalendarCompanies() {
+  const byTicker = new Map();
+  (state.catalog?.companies || [])
+    .filter((company) => company.ticker)
+    .forEach((company) => {
+      const ticker = company.ticker;
+      const current = byTicker.get(ticker);
+      const companyAssets = company.assets?.length || 0;
+      const currentAssets = current?.assets?.length || 0;
+      if (!current || companyAssets > currentAssets || (companyAssets === currentAssets && scoreOf(company) > scoreOf(current))) {
+        byTicker.set(ticker, company);
+      }
+    });
+  return [...byTicker.values()].sort((a, b) => String(a.ticker).localeCompare(String(b.ticker)));
+}
+
+function annualReportBase(company) {
+  const market = company.market_data || {};
+  const annual = market.annual_report || {};
+  const latest = market.latest_report || {};
+  const annualDate = parseIsoDay(annual.filing_date);
+  if (annualDate) {
+    return {
+      date: annualDate,
+      report: annual,
+      estimated: false,
+      source: annual.form || "年报",
+    };
+  }
+  const fallbackDate = parseIsoDay(latest.filing_date);
+  if (fallbackDate) {
+    return {
+      date: fallbackDate,
+      report: latest,
+      estimated: true,
+      source: `${latest.form || "最新报告"}估算`,
+    };
+  }
+  return null;
+}
+
+function annualCalendarData() {
+  const months = calendarMonthOptions();
+  const start = months[0].date;
+  const end = new Date(start.getFullYear(), start.getMonth() + months.length, 1);
+  const events = [];
+  const unscheduled = [];
+
+  annualCalendarCompanies().forEach((company) => {
+    const base = annualReportBase(company);
+    if (!base) {
+      unscheduled.push(company);
+      return;
+    }
+    for (let year = start.getFullYear(); year <= end.getFullYear(); year += 1) {
+      const monthIndex = base.date.getMonth();
+      const safeDay = Math.min(base.date.getDate(), daysInMonth(year, monthIndex));
+      const date = new Date(year, monthIndex, safeDay);
+      if (date < start || date >= end) continue;
+      events.push({
+        date,
+        dayKey: dayKey(date),
+        monthKey: monthKey(date),
+        company,
+        report: base.report,
+        estimated: base.estimated,
+        source: base.source,
+      });
+    }
+  });
+
+  events.sort((a, b) => a.date - b.date || String(a.company.ticker).localeCompare(String(b.company.ticker)));
+  return { months, events, unscheduled };
+}
+
+function jumpToCompanyFromCalendar(id) {
+  state.theme = "全部";
+  state.search = "";
+  state.selectedId = id;
+  if (els.searchInput) els.searchInput.value = "";
+  render();
+  requestAnimationFrame(() => {
+    document.getElementById("companies").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+function renderAnnualCalendar() {
+  if (!els.annualCalendarGrid || !state.catalog) return;
+  const { months, events, unscheduled } = annualCalendarData();
+  const eventCounts = new Map();
+  events.forEach((event) => eventCounts.set(event.monthKey, (eventCounts.get(event.monthKey) || 0) + 1));
+  if (!state.calendarMonth || !months.some((month) => month.key === state.calendarMonth)) {
+    state.calendarMonth = months.find((month) => eventCounts.get(month.key))?.key || months[0]?.key;
+  }
+
+  const selected = months.find((month) => month.key === state.calendarMonth) || months[0];
+  const selectedEvents = events.filter((event) => event.monthKey === selected.key);
+  const eventByDay = new Map();
+  selectedEvents.forEach((event) => {
+    if (!eventByDay.has(event.dayKey)) eventByDay.set(event.dayKey, []);
+    eventByDay.get(event.dayKey).push(event);
+  });
+
+  els.annualCalendarSummary.innerHTML = `
+    <span class="chip">覆盖公司 ${annualCalendarCompanies().length}</span>
+    <span class="chip">未来三年事件 ${events.length}</span>
+    <span class="chip">未排期 ${unscheduled.length}</span>
+  `;
+  els.calendarMonthButtons.innerHTML = months
+    .map((month) => {
+      const count = eventCounts.get(month.key) || 0;
+      return `<button type="button" class="${month.key === selected.key ? "active" : ""}" data-month="${month.key}">
+        ${escapeHtml(month.label)}${count ? ` ${count}` : ""}
+      </button>`;
+    })
+    .join("");
+  els.calendarMonthButtons.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.calendarMonth = button.dataset.month;
+      renderAnnualCalendar();
+      if (window.lucide) lucide.createIcons();
+    });
+  });
+
+  const [year, month] = selected.key.split("-").map(Number);
+  const firstDay = new Date(year, month - 1, 1);
+  const totalDays = daysInMonth(year, month - 1);
+  const leading = (firstDay.getDay() + 6) % 7;
+  const todayKey = dayKey(new Date());
+  const weekdayHtml = ["一", "二", "三", "四", "五", "六", "日"]
+    .map((label) => `<div class="calendar-weekday">${label}</div>`)
+    .join("");
+  const blankHtml = Array.from({ length: leading }, () => `<div class="calendar-day empty"></div>`).join("");
+  const dayHtml = Array.from({ length: totalDays }, (_item, index) => {
+    const date = new Date(year, month - 1, index + 1);
+    const key = dayKey(date);
+    const dayEvents = eventByDay.get(key) || [];
+    return `
+      <div class="calendar-day ${dayEvents.length ? "has-events" : ""} ${key === todayKey ? "today" : ""}">
+        <span class="day-number">${index + 1}</span>
+        <div class="day-events">
+          ${dayEvents
+            .map(
+              (event) => `
+                <button type="button" class="calendar-event ${event.estimated ? "estimated" : ""}" data-id="${escapeHtml(event.company.id)}">
+                  <strong>${escapeHtml(event.company.ticker)}</strong>
+                  <span>${escapeHtml(event.company.name)}</span>
+                </button>`
+            )
+            .join("")}
+        </div>
+      </div>`;
+  }).join("");
+
+  els.annualCalendarTitle.textContent = `${selected.label} 年报日历`;
+  els.annualCalendarGrid.innerHTML = `${weekdayHtml}${blankHtml}${dayHtml}`;
+  els.annualCalendarAgendaMeta.textContent = `${selectedEvents.length} 项`;
+  els.annualCalendarAgenda.innerHTML = selectedEvents.length
+    ? selectedEvents
+        .map(
+          (event) => `
+            <button type="button" class="agenda-item" data-id="${escapeHtml(event.company.id)}">
+              <span class="agenda-date">${event.date.getDate()}日</span>
+              <span>
+                <strong>${escapeHtml(event.company.name)} (${escapeHtml(event.company.ticker)})</strong>
+                <small>${escapeHtml(event.company.theme)} · ${escapeHtml(event.source)}${event.estimated ? " · 估算" : ""}</small>
+              </span>
+            </button>`
+        )
+        .join("")
+    : `<div class="empty-state">本月暂无年报观察日</div>`;
+
+  if (unscheduled.length) {
+    els.annualCalendarAgenda.innerHTML += `
+      <div class="unscheduled-box">
+        <strong>未排期</strong>
+        <p>${unscheduled.slice(0, 10).map((company) => escapeHtml(company.ticker)).join("、")}${unscheduled.length > 10 ? "..." : ""}</p>
+      </div>`;
+  }
+
+  els.annualCalendarGrid.querySelectorAll(".calendar-event").forEach((button) => {
+    button.addEventListener("click", () => jumpToCompanyFromCalendar(button.dataset.id));
+  });
+  els.annualCalendarAgenda.querySelectorAll(".agenda-item").forEach((button) => {
+    button.addEventListener("click", () => jumpToCompanyFromCalendar(button.dataset.id));
+  });
 }
 
 function renderCompanyList() {
