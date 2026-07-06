@@ -99,6 +99,33 @@ function configuredApiBase() {
   return trimTrailingSlash(params.get("api") || "");
 }
 
+function requestedCompanyQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return (params.get("ticker") || params.get("symbol") || params.get("q") || params.get("search") || "").trim();
+}
+
+function findCompanyByQuery(query) {
+  if (!state.catalog || !query) return null;
+  const normalized = query.toLowerCase();
+  return (
+    state.catalog.companies.find((company) => String(company.ticker || "").toLowerCase() === normalized) ||
+    state.catalog.companies.find((company) =>
+      normalizedText(company.name, company.title, company.ticker, company.theme).includes(normalized)
+    )
+  );
+}
+
+function applyInitialCompanyQuery() {
+  const query = requestedCompanyQuery();
+  if (!query || !state.catalog) return false;
+  state.theme = "??";
+  state.search = query;
+  const company = findCompanyByQuery(query);
+  if (company) state.selectedId = company.id;
+  if (els.searchInput) els.searchInput.value = query;
+  return true;
+}
+
 function candidateBackendBases() {
   const bases = [];
   const configured = configuredApiBase();
@@ -1085,7 +1112,13 @@ async function boot() {
   els.refreshButton.addEventListener("click", rebuildCatalog);
   try {
     state.catalog = await loadCatalog();
+    const hasCompanyQuery = applyInitialCompanyQuery();
     render();
+    if (hasCompanyQuery) {
+      requestAnimationFrame(() => {
+        document.getElementById("companies")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
   } catch (error) {
     setStatus(`读取失败：${error.message}`, true);
     els.detailPanel.innerHTML = `<div class="empty-state">请先运行后端或生成 catalog.json。</div>`;
